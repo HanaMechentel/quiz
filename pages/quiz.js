@@ -11,7 +11,10 @@ export default function Quiz() {
   const [questionCount, setQuestionCount] = useState(1);
   const [quizFinished, setQuizFinished] = useState(false);
   const [answerChecked, setAnswerChecked] = useState(false);
+<<<<<<< HEAD
   const [nextClicked, setNextClicked] = useState(false);
+=======
+>>>>>>> e069535fd912dfe058071e1e7e7c97b56c63c85d
   const TOTAL_QUESTIONS = 4;
 
   const fetchQuestions = async (diff) => {
@@ -21,13 +24,20 @@ export default function Quiz() {
   };
 
   const loadQuestion = async () => {
+<<<<<<< HEAD
     if (questionCount > TOTAL_QUESTIONS) {
+=======
+    if (questionCount >= TOTAL_QUESTIONS) {
+>>>>>>> e069535fd912dfe058071e1e7e7c97b56c63c85d
       setQuizFinished(true);
       return;
     }
 
+<<<<<<< HEAD
     setNextClicked(false);
 
+=======
+>>>>>>> e069535fd912dfe058071e1e7e7c97b56c63c85d
     const questions = await fetchQuestions(difficulty);
     if (questions && questions.length > 0) {
       const filtered = questions.filter(q => !askedIds.includes(q._id));
@@ -48,7 +58,11 @@ export default function Quiz() {
 
   useEffect(() => {
     loadQuestion();
+<<<<<<< HEAD
   }, [questionCount]);
+=======
+  }, []); 
+>>>>>>> e069535fd912dfe058071e1e7e7c97b56c63c85d
 
   const checkAnswer = (selected) => {
     if (answerChecked) return;
@@ -77,8 +91,18 @@ export default function Quiz() {
     }
   };
 
+  const handleNextQuestion = () => {
+    if (questionCount >= TOTAL_QUESTIONS) {
+      setQuizFinished(true);
+    } else {
+      setQuestionCount(prev => prev + 1);
+      loadQuestion();
+    }
+  };
+
   return (
     <div className={styles.container}>
+<<<<<<< HEAD
       <h1 className={styles.title}>Quiz de Polytechnique Montr&eacute;al</h1>
       {quizFinished ? (
         <div className={styles.result}>
@@ -87,6 +111,16 @@ export default function Quiz() {
           <p>Votre score final : <strong>{score} / {TOTAL_QUESTIONS}</strong></p>
           <button onClick={() => window.location.href = "/"} className={styles.restartButton}>
             Retour &agrave; l&apos;accueil
+=======
+      <h1 className={styles.title}>Quiz de Polytechnique Montréal</h1>
+      {quizFinished ? (
+        <div className={styles.result}>
+          <h2>Quiz terminé ! 🎉</h2>
+          <p>Vos réponses ont bien été enregistrées.</p>
+          <p>Votre score final : <strong>{score} / {TOTAL_QUESTIONS}</strong></p>
+          <button onClick={() => window.location.href = "/"} className={styles.restartButton}>
+            Retour à l'accueil
+>>>>>>> e069535fd912dfe058071e1e7e7c97b56c63c85d
           </button>
         </div>
       ) : (
