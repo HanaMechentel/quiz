@@ -8,9 +8,10 @@ export default function Quiz() {
   const [score, setScore] = useState(0);
   const [difficulty, setDifficulty] = useState(1);
   const [askedIds, setAskedIds] = useState([]);
-  const [questionCount, setQuestionCount] = useState(0);
+  const [questionCount, setQuestionCount] = useState(1);
   const [quizFinished, setQuizFinished] = useState(false);
-  const TOTAL_QUESTIONS = 10;
+  const [answerChecked, setAnswerChecked] = useState(false);
+  const TOTAL_QUESTIONS = 4;
 
   const fetchQuestions = async (diff) => {
     const res = await fetch(`/api/questions?difficulty=${diff}`);
@@ -19,11 +20,6 @@ export default function Quiz() {
   };
 
   const loadQuestion = async () => {
-    if (questionCount >= TOTAL_QUESTIONS) {
-      setQuizFinished(true);
-      return;
-    }
-
     const questions = await fetchQuestions(difficulty);
     if (questions && questions.length > 0) {
       const filtered = questions.filter(q => !askedIds.includes(q._id));
@@ -38,17 +34,19 @@ export default function Quiz() {
       setAskedIds(prev => [...prev, chosen._id]);
       setSelectedAnswer(null);
       setDisabledOptions(false);
-      setQuestionCount(prev => prev + 1);
+      setAnswerChecked(false);
     }
   };
 
   useEffect(() => {
     loadQuestion();
-  }, [difficulty]);
+  }, []); 
 
   const checkAnswer = (selected) => {
     setSelectedAnswer(selected);
     setDisabledOptions(true);
+    setAnswerChecked(true);
+
     if (selected === currentQuestion.answer) {
       setScore(score + 1);
       if (difficulty < 3) setDifficulty(difficulty + 1);
@@ -57,14 +55,21 @@ export default function Quiz() {
     }
   };
 
+  const handleNextQuestion = () => {
+    if (questionCount >= TOTAL_QUESTIONS) {
+      setQuizFinished(true);
+    } else {
+      setQuestionCount(prev => prev + 1);
+      loadQuestion();
+    }
+  };
+
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Quiz de Polytechnique Montréal</h1>
       {quizFinished ? (
         <div className={styles.result}>
-          <h2><h2><h2>Quiz termin&eacute; ! 🎉</h2>
-          </h2>
-          </h2>
+          <h2>Quiz terminé ! 🎉</h2>
           <p>Vos réponses ont bien été enregistrées.</p>
           <p>Votre score final : <strong>{score} / {TOTAL_QUESTIONS}</strong></p>
           <button onClick={() => window.location.href = "/"} className={styles.restartButton}>
@@ -88,7 +93,7 @@ export default function Quiz() {
                   </button>
                 ))}
               </div>
-              <button onClick={loadQuestion} className={styles.nextButton} disabled={!selectedAnswer}>
+              <button onClick={handleNextQuestion} className={styles.nextButton} disabled={!answerChecked}>
                 Suivant
               </button>
               <p id="score">Score: {score}</p>
