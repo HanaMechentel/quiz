@@ -5,44 +5,125 @@
   padding: 20px;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
   border-radius: 10px;
+  text-align: center;
 }
+
 .title {
   color: white;
 }
+
+.intro {
+  text-align: center;
+  padding: 20px;
+  background-color: #2a2a3d;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  margin-top: 20px;
+}
+
+.startButton {
+  background: linear-gradient(135deg, #ff7eb3, #ff4081);
+  color: white;
+  border: none;
+  padding: 14px 25px;
+  cursor: pointer;
+  margin-top: 15px;
+  border-radius: 30px;
+  font-size: 18px;
+  font-weight: bold;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 10px rgba(255, 64, 129, 0.3);
+}
+
+.startButton:hover {
+  background: linear-gradient(135deg, #ff4081, #ff1744);
+  transform: scale(1.05);
+  box-shadow: 0 6px 15px rgba(255, 64, 129, 0.5);
+}
+
 .optionButton {
   display: block;
   width: 100%;
   margin: 5px 0;
-  padding: 10px;
+  padding: 12px;
   background-color: #5c6bc0;
   border: none;
-  border-radius: 5px;
-  font-size: 14px;
+  border-radius: 8px;
+  font-size: 16px;
   color: white;
+  font-weight: bold;
+  transition: background 0.3s ease-in-out, transform 0.2s;
 }
+
 .optionButton:hover {
   background-color: #3949ab;
+  transform: scale(1.05);
 }
+
 .correct {
   background-color: #4CAF50 !important;
 }
+
 .incorrect {
   background-color: #F44336 !important;
 }
+
 .disabled {
   pointer-events: none;
   opacity: 0.6;
 }
+
 .nextButton {
-  background-color: #ff4081;
+  background: linear-gradient(135deg, #ff7eb3, #ff4081);
   color: white;
   border: none;
-  padding: 12px 20px;
+  padding: 14px 25px;
   cursor: pointer;
   margin-top: 15px;
-  border-radius: 5px;
-  font-size: 16px;
+  border-radius: 30px;
+  font-size: 18px;
+  font-weight: bold;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 10px rgba(255, 64, 129, 0.3);
 }
+
+.nextButton:hover {
+  background: linear-gradient(135deg, #ff4081, #ff1744);
+  transform: scale(1.05);
+  box-shadow: 0 6px 15px rgba(255, 64, 129, 0.5);
+}
+
 .nextButton:disabled {
-  background-color: #ccc;
+  background: #ccc;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.result {
+  text-align: center;
+  padding: 20px;
+  background-color: #2a2a3d;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  margin-top: 20px;
+}
+
+.restartButton {
+  background: linear-gradient(135deg, #ff7eb3, #ff4081);
+  color: white;
+  border: none;
+  padding: 14px 25px;
+  cursor: pointer;
+  margin-top: 15px;
+  border-radius: 30px;
+  font-size: 18px;
+  font-weight: bold;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 10px rgba(255, 64, 129, 0.3);
+}
+
+.restartButton:hover {
+  background: linear-gradient(135deg, #ff4081, #ff1744);
+  transform: scale(1.05);
+  box-shadow: 0 6px 15px rgba(255, 64, 129, 0.5);
 }
