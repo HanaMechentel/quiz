@@ -8,6 +8,9 @@ export default function Quiz() {
   const [score, setScore] = useState(0);
   const [difficulty, setDifficulty] = useState(1);
   const [askedIds, setAskedIds] = useState([]);
+  const [questionCount, setQuestionCount] = useState(0);
+  const [quizFinished, setQuizFinished] = useState(false);
+  const TOTAL_QUESTIONS = 10;
 
   const fetchQuestions = async (diff) => {
     const res = await fetch(`/api/questions?difficulty=${diff}`);
@@ -16,6 +19,11 @@ export default function Quiz() {
   };
 
   const loadQuestion = async () => {
+    if (questionCount >= TOTAL_QUESTIONS) {
+      setQuizFinished(true);
+      return;
+    }
+
     const questions = await fetchQuestions(difficulty);
     if (questions && questions.length > 0) {
       const filtered = questions.filter(q => !askedIds.includes(q._id));
@@ -30,6 +38,7 @@ export default function Quiz() {
       setAskedIds(prev => [...prev, chosen._id]);
       setSelectedAnswer(null);
       setDisabledOptions(false);
+      setQuestionCount(prev => prev + 1);
     }
   };
 
@@ -50,29 +59,45 @@ export default function Quiz() {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Quiz</h1>
-      {currentQuestion ? (
-        <div id="quiz-container">
-          <p id="question">{currentQuestion.question}</p>
-          <div id="options">
-            {currentQuestion.options && currentQuestion.options.map((option, index) => (
-              <button
-                key={index}
-                className={`${styles.optionButton} ${selectedAnswer === option ? (option === currentQuestion.answer ? styles.correct : styles.incorrect) : ""} ${disabledOptions ? styles.disabled : ""}`}
-                onClick={() => checkAnswer(option)}
-                disabled={disabledOptions}
-              >
-                {option}
-              </button>
-            ))}
-          </div>
-          <button onClick={loadQuestion} className={styles.nextButton} disabled={!selectedAnswer}>
-            Suivant
+      <h1 className={styles.title}>Quiz de Polytechnique Montréal</h1>
+      {quizFinished ? (
+        <div className={styles.result}>
+          <h2><h2><h2>Quiz termin&eacute; ! 🎉</h2>
+          </h2>
+          </h2>
+          <p>Vos réponses ont bien été enregistrées.</p>
+          <p>Votre score final : <strong>{score} / {TOTAL_QUESTIONS}</strong></p>
+          <button onClick={() => window.location.href = "/"} className={styles.restartButton}>
+            Retour à l'accueil
           </button>
-          <p id="score">Score: {score}</p>
         </div>
       ) : (
-        <p>Chargement des questions...</p>
+        <>
+          {currentQuestion ? (
+            <div id="quiz-container">
+              <p id="question">{currentQuestion.question}</p>
+              <div id="options">
+                {currentQuestion.options && currentQuestion.options.map((option, index) => (
+                  <button
+                    key={index}
+                    className={`${styles.optionButton} ${selectedAnswer === option ? (option === currentQuestion.answer ? styles.correct : styles.incorrect) : ""} ${disabledOptions ? styles.disabled : ""}`}
+                    onClick={() => checkAnswer(option)}
+                    disabled={disabledOptions}
+                  >
+                    {option}
+                  </button>
+                ))}
+              </div>
+              <button onClick={loadQuestion} className={styles.nextButton} disabled={!selectedAnswer}>
+                Suivant
+              </button>
+              <p id="score">Score: {score}</p>
+              <p>Question {questionCount} / {TOTAL_QUESTIONS}</p>
+            </div>
+          ) : (
+            <p>Chargement des questions...</p>
+          )}
+        </>
       )}
     </div>
   );
