@@ -11,6 +11,7 @@ export default function Quiz() {
   const [questionCount, setQuestionCount] = useState(1);
   const [quizFinished, setQuizFinished] = useState(false);
   const [answerChecked, setAnswerChecked] = useState(false);
+  const [nextClicked, setNextClicked] = useState(false);
   const TOTAL_QUESTIONS = 4;
 
   const fetchQuestions = async (diff) => {
@@ -20,6 +21,13 @@ export default function Quiz() {
   };
 
   const loadQuestion = async () => {
+    if (questionCount > TOTAL_QUESTIONS) {
+      setQuizFinished(true);
+      return;
+    }
+
+    setNextClicked(false);
+
     const questions = await fetchQuestions(difficulty);
     if (questions && questions.length > 0) {
       const filtered = questions.filter(q => !askedIds.includes(q._id));
@@ -40,40 +48,45 @@ export default function Quiz() {
 
   useEffect(() => {
     loadQuestion();
-  }, []); 
+  }, [questionCount]);
 
   const checkAnswer = (selected) => {
+    if (answerChecked) return;
+
     setSelectedAnswer(selected);
     setDisabledOptions(true);
     setAnswerChecked(true);
 
     if (selected === currentQuestion.answer) {
-      setScore(score + 1);
-      if (difficulty < 3) setDifficulty(difficulty + 1);
+      setScore(prev => prev + 1);
+      if (difficulty < 3) setDifficulty(prev => prev + 1);
     } else {
-      if (difficulty > 1) setDifficulty(difficulty - 1);
+      if (difficulty > 1) setDifficulty(prev => prev - 1);
     }
   };
 
   const handleNextQuestion = () => {
-    if (questionCount >= TOTAL_QUESTIONS) {
-      setQuizFinished(true);
-    } else {
+    if (!answerChecked || nextClicked) return;
+    
+    setNextClicked(true);
+
+    if (questionCount < TOTAL_QUESTIONS) {
       setQuestionCount(prev => prev + 1);
-      loadQuestion();
+    } else {
+      setQuizFinished(true);
     }
   };
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Quiz de Polytechnique Montréal</h1>
+      <h1 className={styles.title}>Quiz de Polytechnique Montr&eacute;al</h1>
       {quizFinished ? (
         <div className={styles.result}>
-          <h2>Quiz terminé ! 🎉</h2>
-          <p>Vos réponses ont bien été enregistrées.</p>
+          <h2>Quiz termin&eacute; ! 🎉</h2>
+          <p>Vos r&eacute;ponses ont bien &eacute;t&eacute; enregistr&eacute;es.</p>
           <p>Votre score final : <strong>{score} / {TOTAL_QUESTIONS}</strong></p>
           <button onClick={() => window.location.href = "/"} className={styles.restartButton}>
-            Retour à l'accueil
+            Retour &agrave; l&apos;accueil
           </button>
         </div>
       ) : (
