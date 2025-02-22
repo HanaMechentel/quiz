@@ -1,0 +1,48 @@
+.container {
+  max-width: 600px;
+  margin: 50px auto;
+  background: #2a2a3d;
+  padding: 20px;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+.title {
+  color: white;
+}
+.optionButton {
+  display: block;
+  width: 100%;
+  margin: 5px 0;
+  padding: 10px;
+  background-color: #5c6bc0;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  color: white;
+}
+.optionButton:hover {
+  background-color: #3949ab;
+}
+.correct {
+  background-color: #4CAF50 !important;
+}
+.incorrect {
+  background-color: #F44336 !important;
+}
+.disabled {
+  pointer-events: none;
+  opacity: 0.6;
+}
+.nextButton {
+  background-color: #ff4081;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  cursor: pointer;
+  margin-top: 15px;
+  border-radius: 5px;
+  font-size: 16px;
+}
+.nextButton:disabled {
+  background-color: #ccc;
+}
