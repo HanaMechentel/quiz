@@ -1,28 +1,22 @@
 import mongoose from 'mongoose';
-import dotenv from 'dotenv';
-dotenv.config();
 
-let isConnected = false;
+const MONGODB_URI = process.env.MONGODB_URI;
 
 export const connectToDB = async () => {
-  mongoose.set('strictQuery', true);
-
-  if (isConnected) {
-    console.log('✅ MongoDB est déjà connecté');
-    return;
+  if (!MONGODB_URI) {
+    console.error("❌ ERREUR : MONGODB_URI n'est pas défini !");
+    throw new Error("MONGODB_URI n'est pas défini !");
   }
 
   try {
-    await mongoose.connect(process.env.MONGODB_URI, {
-      dbName: 'quiz',
+    console.log("⏳ Tentative de connexion à MongoDB...");
+    await mongoose.connect(MONGODB_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-
-    isConnected = true;
-    console.log('✅ Connexion à MongoDB réussie');
+    console.log("✅ Connexion réussie à MongoDB !");
   } catch (error) {
-    console.error('❌ Erreur de connexion à MongoDB:', error);
+    console.error("❌ ERREUR MongoDB :", error);
+    throw error;
   }
 };
-console.log('🔍 URI MongoDB:', process.env.MONGODB_URI ? '✅ Chargé' : '❌ Non chargé');
